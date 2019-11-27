@@ -1,0 +1,20 @@
+
+kalau belum login
+
+/list-proyek
+/list-proyek/{list-proyek}
+/login
+/register
+
+sudah login company
+/dashboard/ - menampilkan daftar pt punyanya dia & menambah perusahaan
+/dashboard/{id-perusahaan}/proyek (menampilkan daftar proyek berdasarkan perusahaan dan menambah proyek)
+/dashboard/{id-perusahaan}/proyek/{list-proyek} (detail dari proyek)
+
+investor
+/dashboard/ (menampilkan proyerk terbaru dan hot)
+/dashboard/proyek/{id-proyek}
+# /dashboard/proyek
+# /dashboard/proyek/hot
+/dashboard/investasiku
+/dashboard/investasiku/{id-investasiku}
