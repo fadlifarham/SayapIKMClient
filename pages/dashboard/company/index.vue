@@ -125,12 +125,14 @@
       async getUser() {
         this.user = this.$auth.user
         return this.$auth.user
+      },
+      
       showPopupAddCompany() {
         this.$modal.show('add-company');
       }
-    },
+    }
 
-  };
+  }
 </script>
 
 <style scoped>

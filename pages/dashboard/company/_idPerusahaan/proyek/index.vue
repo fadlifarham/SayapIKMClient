@@ -118,12 +118,14 @@
           console.log(response.data.results)
           this.projects = response.data.results
         })
+      },
+
       showPopupAddProject() {
         this.$modal.show('add-project');
       }
     },
 
-  };
+  }
 </script>
 
 <style scoped>
