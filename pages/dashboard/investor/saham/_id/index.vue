@@ -74,8 +74,8 @@
                   ></v-text-field>
                 </div>
                 <div class="form-btn" >
-                  <v-btn outline color="primary" block>Submit</v-btn>
-                  <v-btn outline block>Clear</v-btn>
+                  <v-btn color="primary" class="btn-margin-bottom" block>Submit</v-btn>
+                  <v-btn color="error" block>Clear</v-btn>
                 </div>
               </v-form>
             </v-card-text>
@@ -164,3 +164,8 @@
 
   };
 </script>
+<style scoped>
+  .btn-margin-bottom {
+    margin-bottom: 10px;
+  }
+</style>
