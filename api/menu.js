@@ -5,7 +5,17 @@ const Menu = [
     group: 'apps',
     icon: 'dashboard',
     name: 'Dashboard',
-    href: '/dashboard'
+    href: '/dashboard',
+    items: [
+      {
+        name: 'company', 
+        title: 'Company', 
+        href: '/dashboard/company'
+      },
+      {name: 'statistic', title: 'Statistic', badge: 'new', href: '/widgets/statistic'},
+      {name: 'chart', title: 'Chart', href: '/widgets/chart'},
+      {name: 'list', title: 'List', href: '/widgets/list'},
+    ]
   },
 ];
 // reorder menu

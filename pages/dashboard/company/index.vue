@@ -40,7 +40,7 @@
     methods: {
       listProyek() {
         let id = 1;
-        this.$router.push('list-proyek/' + id);
+        this.$router.push('company/' + id + '/proyek');
       }
     },
 
