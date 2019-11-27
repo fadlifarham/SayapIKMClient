@@ -55,27 +55,89 @@
           </v-card>
         </v-flex>
       </v-layout>
+      <v-layout row wrap>
+        <v-flex lg12 sm12>
+          <v-widget title="Informasi Investasi">
+            <div slot="widget-content">
+              <e-chart
+                :path-option="[
+                  ['dataset.source', dataInformasi],
+                  ['color', [color.lightBlue.base, color.indigo.base, color.pink.base, color.green.base, color.cyan.base, color.teal.base]],
+                  ['legend.orient', 'horizontal'],
+                  ['legend.y', 'bottom'],
+                  ['xAxis.show', false],
+                  ['yAxis.show', false],
+                  ['series[0].type', 'pie'],
+                ]"
+                height="350px"
+                width="100%"
+              >
+              </e-chart>
+            </div>
+          </v-widget>
+          <v-card>
+            <v-card-text>
+              <table class="v-table">
+                <tr>
+                  <td>Dana Terkumpul</td>
+                  <td>Rp 87000</td>
+                  <td>Dana Dibutuhkan</td>
+                  <td>Rp 8700900</td>
+                </tr>
+              </table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
     </v-container>
   </div>
 </template>
 
 <script>
+  import EChart from '@/components/chart/echart';
+
   import Material from 'vuetify/es5/util/colors';
+  import {
+    StackData,
+    SinData,
+    monthVisitData,
+    campaignData,
+    locationData,
+  } from '@/api/chart';
 
   import NameCard from '@/components/widgets/card/NameCard';
   import ProfileCard from '@/components/widgets/card/ProfileCard';
   import Buttons from "../../../../general/buttons";
+  import VWidget from "../../../../../components/VWidget";
+
+  import MiniChart from '@/components/widgets/chart/MiniChart';
+  import BoxChart from '@/components/widgets/chart/BoxChart';
 
   export default {
     components: {
+      VWidget,
       Buttons,
       NameCard,
-      ProfileCard
+      ProfileCard,
+
+      BoxChart,
+      MiniChart,
+      EChart,
     },
     layout: 'dashboard',
     data: () => ({
       color: Material,
       selectedTab: 'tab-1',
+      dataInformasi: [
+        {
+          value: 335232,
+          name: 'Dana Terkumpul'
+        },
+        {
+          value: 310000,
+          name: 'Dana Dibutuhkan'
+        }
+      ],
       hotProyeks: [
         '',
         '',
@@ -85,7 +147,14 @@
         '',
         '',
         ''
-      ]
+      ],
+      dataset: {
+        sinData: SinData,
+        monthVisit: monthVisitData,
+        campaign: campaignData,
+        location: locationData,
+        stackData: StackData,
+      }
     }),
     computed: {
       computeCardLayout () {

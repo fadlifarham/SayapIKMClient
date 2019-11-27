@@ -53,7 +53,7 @@
     methods: {
       listProyek() {
         let id = 1;
-        this.$router.push('investasiku/' + id + '');
+        this.$router.push(  id + '');
       }
     },
 
