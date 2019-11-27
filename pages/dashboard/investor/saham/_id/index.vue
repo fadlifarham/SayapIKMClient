@@ -47,7 +47,7 @@
                     <v-btn color="primary" block>Download Prospektus</v-btn>
                   </td>
                   <td>
-                    <v-btn color="success" block>Investasi (Beli Saham)</v-btn>
+                    <v-btn color="success" block @click="showPopupInvestment">Investasi (Beli Saham)</v-btn>
                   </td>
                 </tr>
                 </tbody>
@@ -55,6 +55,32 @@
             </v-card-text>
           </v-card>
         </v-flex>
+
+        <modal name="investment">
+          <v-card>
+            <v-card-text>
+              <v-flex sm-12>
+                <div align="center">
+                  <h3 class="title">INVESTASI</h3>
+                </div>
+              </v-flex>
+              <v-form>
+                <div class="d-flex my-2">
+                  <v-text-field
+                    label="Jumlah Investasi"
+                    v-validate="'required'"
+                    :error-messages="errors.collect('jumlah')"
+                    required
+                  ></v-text-field>
+                </div>
+                <div class="form-btn" >
+                  <v-btn color="primary" class="btn-margin-bottom" block>Submit</v-btn>
+                  <v-btn color="error" block>Clear</v-btn>
+                </div>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </modal>
       </v-layout>
     </v-container>
   </div>
@@ -79,17 +105,18 @@
 
   import MiniChart from '@/components/widgets/chart/MiniChart';
   import BoxChart from '@/components/widgets/chart/BoxChart';
+  import Layout from "../../../../../components/media/Layout";
 
   export default {
     components: {
+      Layout,
       VWidget,
       Buttons,
       NameCard,
       ProfileCard,
-
       BoxChart,
       MiniChart,
-      EChart,
+      EChart
     },
     layout: 'dashboard',
     data: () => ({
@@ -128,8 +155,17 @@
       listProyek() {
         let id = 1;
         this.$router.push('investasiku/' + id + '');
+      },
+      showPopupInvestment() {
+        this.$modal.show('investment');
+
       }
     },
 
   };
 </script>
+<style scoped>
+  .btn-margin-bottom {
+    margin-bottom: 10px;
+  }
+</style>

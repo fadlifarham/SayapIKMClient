@@ -52,7 +52,8 @@ module.exports = {
   */
   plugins: [
     '@/plugins/vuetify',
-    '@/plugins/vee-validate'
+    '@/plugins/vee-validate',
+    '@/plugins/vue-modal'
   ],
 
   // BaseURL
