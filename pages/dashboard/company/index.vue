@@ -45,6 +45,7 @@
           <v-form>
             <div class="d-flex my-2">
               <v-text-field
+                v-model="name"
                 label="Nama Perusahaan"
                 v-validate="'required'"
                 :error-messages="errors.collect('nama_perusahaan')"
@@ -53,30 +54,34 @@
             </div>
 
             <v-flex lg12 sm12>
-              <v-text-field textarea label="Description">
+              <v-text-field v-model="description" textarea label="Description">
               </v-text-field>
             </v-flex>
 
             <v-text-field
+              v-model="address"
               label="Alamat"
             ></v-text-field>
 
             <v-text-field
+              v-model="image"
               label="Logo"
               type="file"
             ></v-text-field>
 
             <v-text-field
+            v-model="prospectus"
               label="Prospektus"
               type="file"
             ></v-text-field>
 
             <v-text-field
+              v-model="nShares"
               label="Jumlah Saham"
             ></v-text-field>
 
             <div class="form-btn" >
-              <v-btn color="primary" class="btn-margin-bottom" block>Submit</v-btn>
+              <v-btn color="primary" class="btn-margin-bottom" @click="addCompany" block>Submit</v-btn>
               <v-btn color="error" block>Clear</v-btn>
             </div>
           </v-form>
@@ -95,7 +100,14 @@
       color: Material,
       selectedTab: 'tab-1',
       user: "",
-      companies: []
+      companies: [],
+
+      name: "",
+      description: "",
+      address: "",
+      image: "",
+      prospectus: "",
+      nShares: ""
     }),
 
     mounted() {
@@ -127,9 +139,19 @@
         return this.$auth.user
       },
       
-      showPopupAddCompany() {
-        this.$modal.show('add-company');
+      addCompany() {
+        this.$axios.post('core/companies', {
+          name: this.name,
+          description: this.description,
+          address: this.address,
+          image: this.image,
+          prospectus: this.prospectus,
+          nShares: this.nShares
+        }).then(response => {
+          console.log(response)
+        })
       }
+      
     }
 
   }

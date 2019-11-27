@@ -172,6 +172,7 @@
 
     mounted() {
       this.getDetailProject()
+      this.getProjectReports()
     },
 
     methods: {
@@ -198,8 +199,10 @@
       },
 
       getProjectReports() {
-        // let id = this.$route.params.idProyek
-        // this.$axios.get('core/project')
+        let id = this.$route.params.idProyek
+        this.$axios.get('core/reports/?project=' + id).then(response => {
+          console.log(response.data)
+        })
       }
     },
 
