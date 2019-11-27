@@ -7,7 +7,7 @@
       </v-flex>
 
       <v-layout row wrap>
-        <v-flex lg4 sm12 v-for="item in this.hotProyeks">
+        <v-flex lg4 sm12 v-for="item in this.hotProyeks" :key="item.id">
           <v-card>
             <v-card-media :src="require('@/static/bg/8.jpg')" height="250"></v-card-media>
             <v-card-text>

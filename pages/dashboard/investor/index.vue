@@ -7,21 +7,21 @@
       </v-flex>
 
       <v-layout row wrap>
-        <v-flex lg4 sm12 v-for="item in this.hotProyeks">
+        <v-flex lg4 sm12 v-for="item in this.newProyeks" :key="item.id">
           <v-card>
-            <v-card-media :src="require('@/static/bg/8.jpg')" height="250"></v-card-media>
+            <v-card-media :src="item.image" height="250"></v-card-media>
             <v-card-text>
-              <h3 class="headline">Nama Perusahaan</h3>
+              <h3 class="headline">{{ item.name }}</h3>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-text>
               <div>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                {{ subString(item.description) }}
               </div>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
-              <v-btn flat small @click="listProyek">Info Lebih Lanjut</v-btn>
+              <v-btn flat small @click="listProyek(item.id)">Info Lebih Lanjut</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -32,21 +32,21 @@
         <h2>Hot Proyek</h2>
       </v-flex>
       <v-layout row wrap>
-        <v-flex lg4 sm12 v-for="item in this.hotProyeks">
+        <v-flex lg4 sm12 v-for="item in this.hotProyeks" :key="item.id">
           <v-card>
-            <v-card-media :src="require('@/static/bg/8.jpg')" height="250"></v-card-media>
+            <v-card-media :src="item.image" height="250"></v-card-media>
             <v-card-text>
-              <h3 class="headline">Nama Perusahaan</h3>
+              <h3 class="headline">{{ item.name }}</h3>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-text>
               <div>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                {{ subString(item.description) }}
               </div>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
-              <v-btn flat small @click="listProyek">Info Lebih Lanjut</v-btn>
+              <v-btn flat small @click="listProyek(item.id)">Info Lebih Lanjut</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -63,22 +63,36 @@
     data: () => ({
       color: Material,
       selectedTab: 'tab-1',
-      hotProyeks: [
-        '',
-        '',
-        ''
-      ],
-      newProyeks: [
-        '',
-        '',
-        ''
-      ]
+      hotProyeks: [],
+      newProyeks: []
     }),
 
+    mounted() {
+      this.getHotProyeks()
+      this.getNewProyeks()
+    },
+
     methods: {
-      listProyek() {
-        let id = 1;
+      subString(dataString) {
+        var data = dataString.substr(1, 200);
+        data = data + " ...";
+        return data;
+      },
+
+      listProyek(id) {
         this.$router.push('investor/proyek/' + id);
+      },
+
+      getHotProyeks() {
+        this.$axios.get('/core/projects/?ordering=-n_invests').then(response => {
+          this.hotProyeks = response.data.results
+        });
+      },
+
+      getNewProyeks() {
+        this.$axios.get('/core/projects/?ordering=-created_at').then(response => {
+          this.newProyeks = response.data.results
+        });
       }
     },
 

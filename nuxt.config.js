@@ -57,12 +57,19 @@ module.exports = {
 
   // BaseURL
   axios: {
-    baseURL: "http://192.168.43.136:8000/api/",
+    baseURL: "http://192.168.100.72:8000/api/",
     credentials: false
   },
 
   // Auth
   auth: {
+    redirect: {
+      login: '/login',
+      logout: '/',
+      callback: 'login',
+      home: '/dashboard'
+    },
+    
     strategies: {
       local: {
         endpoints: {
@@ -72,7 +79,7 @@ module.exports = {
         },
         tokenType: "Token"
       }
-    }
+    },
   },
 
   router: {

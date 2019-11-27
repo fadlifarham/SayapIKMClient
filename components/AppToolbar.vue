@@ -103,6 +103,7 @@
         Util.toggleFullScreen();
       },
       handleLogout() {
+        this.$auth.logout();
         this.$router.push('/login');
       }
     }
