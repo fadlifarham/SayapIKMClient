@@ -56,7 +56,7 @@
       <v-flex sm12>
         <h2>Report Investasi</h2>
       </v-flex>
-      <v-btn color="info" block>Add Report</v-btn>
+      <v-btn color="info" @click="showPopupAddReport" block>Tambah Report</v-btn>
       <v-layout row wrap>
         <v-flex lg12 sm12 v-for="item in reports" :key="item.id">
           <v-layout row>
@@ -105,6 +105,72 @@
         </v-flex>
       </v-layout>
 
+
+      <modal name="add-report"
+             transition="nice-modal-fade"
+             classes="demo-modal-class"
+             :min-width="200"
+             :min-height="200"
+             :pivot-y="0.5"
+             :adaptive="true"
+             :scrollable="true"
+             :reset="true"
+             width="60%"
+             height="auto">
+
+        <v-card>
+          <v-card-text>
+            <v-flex sm-12>
+              <div align="center">
+                <h3 class="title">Tambah Proyek</h3>
+              </div>
+            </v-flex>
+            <v-form>
+              <div class="d-flex my-2">
+                <v-flex lg12 sm12>
+                  <v-text-field textarea label="Description">
+                  </v-text-field>
+                </v-flex>
+              </div>
+              
+              <v-text-field
+                label="File"
+                type="file"
+              ></v-text-field>
+
+              <v-text-field
+                label="Revenue"
+                type="text"
+              ></v-text-field>
+
+              <v-text-field
+                label="Profit"
+                type="text"
+              ></v-text-field>
+
+              <v-text-field
+                label="Cost"
+                type="text"
+              ></v-text-field>
+
+              <v-text-field
+                label="Load"
+                type="text"
+              ></v-text-field>
+
+              <v-text-field
+                label="Gambar Dokumentasi"
+                type="file"
+              ></v-text-field>
+
+              <div class="form-btn" >
+                <v-btn color="primary" class="btn-margin-bottom" block>Submit</v-btn>
+                <v-btn color="error" block>Clear</v-btn>
+              </div>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </modal>
     </v-container>
   </div>
 </template>
@@ -197,7 +263,9 @@
           this.company_address = data.company.address
         })
       },
-
+      showPopupAddReport() {
+        this.$modal.show('add-report');
+      },
       getProjectReports() {
         let id = this.$route.params.idProyek
         this.$axios.get('core/reports/?project=' + id).then(response => {
