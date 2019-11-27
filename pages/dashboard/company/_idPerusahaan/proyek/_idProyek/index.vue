@@ -2,7 +2,9 @@
   <div id="pageDashboard">
     <v-container grid-list-xl fluid>
       <v-layout row wrap>
-
+        <v-flex lg4 sm12>
+            
+        </v-flex>
         <v-flex lg4 sm12>
           <v-card>
             <v-card-media :src="require('@/static/bg/8.jpg')" height="250">

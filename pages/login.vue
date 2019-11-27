@@ -48,8 +48,8 @@
     data: () => ({
       loading: false,
       model: {
-        username: 'admin@example.com',
-        password: 'password'
+        username: 'admin',
+        password: '123456789'
       }
     }),
 
@@ -67,7 +67,14 @@
             password: this.model.password
           }
         }).then(response => {
-          console.log(response);
+          this.$axios.get('/lib/rest-auth/user').then(response => {
+            if (response.data.role == "IV") {
+              this.$router.push('dashboard/investor')
+            } else {
+              this.$router.push('dashboard/company')
+            }
+          });
+          
         })
       }
     }

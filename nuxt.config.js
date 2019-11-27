@@ -57,7 +57,7 @@ module.exports = {
 
   // BaseURL
   axios: {
-    baseURL: "http://localhsost:8000/api",
+    baseURL: "http://192.168.43.136:8000/api/",
     credentials: false
   },
 
@@ -66,17 +66,18 @@ module.exports = {
     strategies: {
       local: {
         endpoints: {
-          login: { url: 'auth/login', method: 'post', propertyName: 'token' },
-          logout: { url: 'auth/logout', method: 'post' },
-          user: { url: 'auth/user', method: 'get', propertyName: 'user' }
-        }
+          login: { url: '/lib/rest-auth/login/', method: 'post', propertyName: 'key' },
+          logout: { url: '/lib/rest-auth/logout/', method: 'post' },
+          user: { url: '/lib/rest-auth/user', method: 'get', propertyName: false }
+        },
+        tokenType: "Token"
       }
     }
   },
 
-  // router: {
-  //   middleware: ['auth']
-  // },
+  router: {
+    middleware: ['auth']
+  },
 
   /*
   ** Nuxt.js modules

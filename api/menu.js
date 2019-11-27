@@ -12,9 +12,6 @@ const Menu = [
         title: 'Company', 
         href: '/dashboard/company'
       },
-      {name: 'statistic', title: 'Statistic', badge: 'new', href: '/widgets/statistic'},
-      {name: 'chart', title: 'Chart', href: '/widgets/chart'},
-      {name: 'list', title: 'List', href: '/widgets/list'},
     ]
   },
 ];
