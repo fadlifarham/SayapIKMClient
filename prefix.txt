@@ -12,7 +12,7 @@ sudah login company
 /dashboard/{id-perusahaan}/proyek/{list-proyek} (detail dari proyek)
 
 investor
-/dashboard/ (menampilkan proyerk terbaru dan hot)
+/dashboard/investor (menampilkan proyerk terbaru dan hot)
 /dashboard/proyek/{id-proyek}
 # /dashboard/proyek
 # /dashboard/proyek/hot
