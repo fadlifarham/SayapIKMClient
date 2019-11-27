@@ -2,7 +2,6 @@
   <div id="pageDashboard">
     <v-container grid-list-xl fluid>
       <v-layout row wrap>
-
         <v-flex lg4 sm12>
           <v-card>
             <v-card-media :src="require('@/static/bg/8.jpg')" height="250">
@@ -29,7 +28,7 @@
 
 <script>
   import Material from 'vuetify/es5/util/colors';
-  
+
   export default {
     layout: 'dashboard',
     data: () => ({
