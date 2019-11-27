@@ -88,6 +88,8 @@
         </v-card-text>
       </v-card>
     </modal>
+
+
   </div>
 </template>
 
@@ -150,6 +152,10 @@
         }).then(response => {
           console.log(response)
         })
+      },
+
+      showPopupAddCompany() {
+        this.$modal.show('add-company');
       }
       
     }
