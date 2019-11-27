@@ -3,21 +3,21 @@
     <v-container grid-list-xl fluid>
       <v-layout row wrap>
 
-        <v-flex lg4 sm12 v-for="item in this.proyeks">
+        <v-flex lg4 sm12 v-for="item in this.projects" :key="item">
           <v-card>
-            <v-card-media :src="require('@/static/bg/8.jpg')" height="250"></v-card-media>
+            <v-card-media :src="item.image" height="250"></v-card-media>
             <v-card-text>
-              <h3 class="headline">Nama Proyek</h3>
+              <h3 class="headline">{{ item.name }}</h3>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-text>
               <div>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                {{ subString(item.description) }}
               </div>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
-              <v-btn flat small @click="listProyek">Info Lebih Lanjut</v-btn>
+              <v-btn flat small @click="detailProyek(item.id)">Info Lebih Lanjut</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -35,19 +35,31 @@
     data: () => ({
       color: Material,
       selectedTab: 'tab-1',
-      proyeks: [
-        '',
-        '',
-        '',
-        '',
-        ''
-      ]
+      projects: []
     }),
 
+    mounted() {
+      this.getMyProject()
+    },
+
     methods: {
-      detailProyek() {
-        let id = 1;
+      subString(dataString) {
+        var data = dataString.substr(1, 200);
+        data = data + " ...";
+        return data;
+      },
+
+      detailProyek(id) {
+        console.log(id)
         this.$router.push('proyek/' + id);
+      },
+
+      getMyProject() {
+        let id = this.$route.params.idPerusahaan
+        this.$axios.get('/core/projects/?company=' + id).then(response => {
+          console.log(response.data.results)
+          this.projects = response.data.results
+        })
       }
     },
 

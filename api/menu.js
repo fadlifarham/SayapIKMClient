@@ -9,9 +9,29 @@ const Menu = [
     items: [
       {
         name: 'company', 
-        title: 'Company', 
-        href: '/dashboard/company'
+        title: 'Perusahaan', 
+        href: '/dashboard/company',
+        items: [
+          {
+            name: 'idPerusahaan', 
+            title: 'ID Perusahaan',
+            href: '/dashboard/company/:id',
+            items: [
+              {
+                name: 'proyek', 
+                title: 'Proyek', 
+                href: '/dashboard/company/:id/proyek'
+              }
+            ]
+          }
+        ]
       },
+      {
+        name: 'investor', 
+        title: 'Investor', 
+        href: '/dashboard/investor'
+      },
+      
     ]
   },
 ];

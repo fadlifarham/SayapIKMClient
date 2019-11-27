@@ -22,11 +22,10 @@
           </v-widget>
         </v-flex>
         <v-flex lg8 sm12>
-          <h2>Judul Proyeknya</h2>
+          <h2>{{ project_name }}</h2>
           <v-card>
             <v-card-text>
-              deskripsi proyek:<br>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+              {{ subString(project_description) }}
             </v-card-text>
           </v-card>
           <br>
@@ -36,19 +35,15 @@
                 <tbody>
                 <tr>
                   <td>Address</td>
-                  <td>JL Bukit Barisan No. 2520111, Surabaya</td>
-                </tr>
-                <tr>
-                  <td>Jumlah Saham</td>
-                  <td>25000 Lembar</td>
+                  <td>{{ company_address }}</td>
                 </tr>
                 <tr>
                   <td>Dana Terkumpul</td>
-                  <td>Rp 87000</td>
+                  <td>Rp {{ funded }}</td>
                 </tr>
                 <tr>
                   <td>Dana Dibutuhkan</td>
-                  <td>Rp 8700900</td>
+                  <td>Rp {{ target }}</td>
                 </tr>
                 </tbody>
               </table>
@@ -165,13 +160,46 @@
         '',
         '',
         ''
-      ]
+      ],
+      funded: "",
+      target: "",
+      project_name: "",
+      project_description: "",
+      company_address: "",
+
+
     }),
 
+    mounted() {
+      this.getDetailProject()
+    },
+
     methods: {
-      detailProyek() {
-        let id = 1;
-        this.$router.push('proyek/' + id);
+      subString(dataString) {
+        var data = dataString.substr(1, 800)
+        data = data + " ...";
+        return data;
+      },
+
+      getDetailProject() {
+        let id = this.$route.params.idProyek
+        this.$axios.get('core/projects/' + id + '/?expand=company').then(response => {
+          var data = response.data
+
+          this.dataInformasi[0].value = data.funded
+          this.dataInformasi[1].value = data.target
+
+          this.funded = data.funded
+          this.target = data.target
+          this.project_name = data.name
+          this.project_description = data.description
+          this.company_address = data.company.address
+        })
+      },
+
+      getProjectReports() {
+        // let id = this.$route.params.idProyek
+        // this.$axios.get('core/project')
       }
     },
 
