@@ -22,11 +22,10 @@
           </v-card>
         </v-flex>
         <v-flex lg8 sm12>
-          <h2>PT. Kenapa Kamu Baca Saya</h2>
+          <h2>{{ company.name }}</h2>
           <v-card>
             <v-card-text>
-              Deskripsi Perusahaan:<br>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+              {{ company.description }}
             </v-card-text>
           </v-card>
           <br>
@@ -36,11 +35,11 @@
                 <tbody>
                 <tr>
                   <td>Address</td>
-                  <td>JL Bukit Barisan No. 2520111, Surabaya</td>
+                  <td>{{ company.address }}</td>
                 </tr>
                 <tr>
                   <td>Jumlah Saham</td>
-                  <td>25000 Lembar</td>
+                  <td>{{ company.nShares }} Lembar</td>
                 </tr>
                 <tr>
                   <td>
@@ -67,6 +66,7 @@
               <v-form>
                 <div class="d-flex my-2">
                   <v-text-field
+                    v-model="sumInvest"
                     label="Jumlah Investasi"
                     v-validate="'required'"
                     :error-messages="errors.collect('jumlah')"
@@ -74,7 +74,7 @@
                   ></v-text-field>
                 </div>
                 <div class="form-btn" >
-                  <v-btn color="primary" class="btn-margin-bottom" block>Submit</v-btn>
+                  <v-btn color="primary" class="btn-margin-bottom" @click="submitInvest" block>Submit</v-btn>
                   <v-btn color="error" block>Clear</v-btn>
                 </div>
               </v-form>
@@ -122,24 +122,22 @@
     data: () => ({
       color: Material,
       selectedTab: 'tab-1',
-      hotProyeks: [
-        '',
-        '',
-        ''
-      ],
-      newProyeks: [
-        '',
-        '',
-        ''
-      ],
+      company: "",
       dataset: {
         sinData: SinData,
         monthVisit: monthVisitData,
         campaign: campaignData,
         location: locationData,
         stackData: StackData,
-      }
+      },
+      sumInvest: ""
+
     }),
+
+    mounted() {
+      this.getCompany();
+    },
+
     computed: {
       computeCardLayout () {
         return (this.mini) ? 'row' : 'column';
@@ -152,6 +150,15 @@
       },
     },
     methods: {
+      subString(dataString) {
+        if (dataString == undefined) {
+          return dataString
+        }
+        var data = dataString.substr(1, 200);
+        data = data + " ...";
+        return data;
+      },
+
       listProyek() {
         let id = 1;
         this.$router.push('investasiku/' + id + '');
@@ -159,6 +166,22 @@
       showPopupInvestment() {
         this.$modal.show('investment');
 
+      },
+
+      getCompany() {
+        let id = this.$route.params.id
+        this.$axios.get('core/companies/' + id).then(response => {
+          this.company = response.data
+        })
+      },
+
+      submitInvest() {
+        let id = this.$route.params.id
+        this.$axios.post('core/companies/' + id + '/invest/', {
+          amount: this.sumInvest
+        }).then(response => {
+          console.log(response)
+        })
       }
     },
 

@@ -17,7 +17,7 @@
             <v-divider></v-divider>
             <v-card-text>
               <div>
-                {{ item.description }}
+                {{ subString(item.description) }}
               </div>
             </v-card-text>
             <v-divider></v-divider>
@@ -52,12 +52,22 @@
     },
 
     methods: {
+
+      subString(dataString) {
+        if (dataString == undefined) {
+          return dataString
+        }
+        var data = dataString.substr(1, 200);
+        data = data + " ...";
+        return data;
+      },
+
       detailProyek(id) {
         this.$router.push('/dashboard/investor/saham/' + id);
       },
 
       getSaham() {
-        this.$axios.get('core/companies/my/').then(response => {
+        this.$axios.get('core/companies/').then(response => {
           // console.log(response)
           this.saham = response.data.results
         })
