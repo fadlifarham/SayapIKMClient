@@ -1,7 +1,6 @@
 <template>
   <div id="pageDashboard">
     <v-container grid-list-xl fluid>
-
       <v-flex sm12>
         <h2>Investasiku</h2>
       </v-flex>
@@ -18,7 +17,7 @@
             <v-card-text>
               <div>
                 <!-- {{ subString(item.description) }} -->
-                {{ item.description }}
+                {{ item.description.substr(1, 200) }}
               </div>
             </v-card-text>
             <v-divider></v-divider>
@@ -33,48 +32,41 @@
 </template>
 
 <script>
-  import Material from 'vuetify/es5/util/colors';
+import Material from "vuetify/es5/util/colors";
 
-  export default {
-    layout: 'dashboard',
-    data: () => ({
-      color: Material,
-      selectedTab: 'tab-1',
-      myInvestProjects: [
-        '',
-        '',
-        ''
-      ],
-    }),
+export default {
+  layout: "dashboard",
+  data: () => ({
+    color: Material,
+    selectedTab: "tab-1",
+    myInvestProjects: ["", "", ""]
+  }),
 
-    mounted() {
-      this.getMyInvestProjects()
-    },
+  mounted() {
+    this.getMyInvestProjects();
+  },
 
-    methods: {
-
-      subString(dataString) {
-        if (dataString.length <= 200) {
-          return dataString;  
-        } else {
-          var data = dataString.substr(1, 200);
-          data = data + " ...";
-          return data;
-        }
-      },
-
-      detailProyek(id) {
-        this.$router.push('/dashboard/investor/investasiku/' + id);
-      },
-
-      getMyInvestProjects() {
-        this.$axios.get('core/projects/my/').then(response => {
-          console.log(response.data.results)
-          this.myInvestProjects = response.data.results
-          
-        })
+  methods: {
+    subString(dataString) {
+      if (dataString.length <= 200) {
+        return dataString;
+      } else {
+        var data = dataString.substr(1, 200);
+        data = data + " ...";
+        return data;
       }
     },
 
-  };
+    detailProyek(id) {
+      this.$router.push("/dashboard/investor/investasiku/" + id);
+    },
+
+    getMyInvestProjects() {
+      this.$axios.get("core/projects/my/").then(response => {
+        console.log(response.data.results);
+        this.myInvestProjects = response.data.results;
+      });
+    }
+  }
+};
 </script>
