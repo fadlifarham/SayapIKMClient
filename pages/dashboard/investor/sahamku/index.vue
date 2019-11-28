@@ -48,7 +48,7 @@
     }),
 
     mounted() {
-      this.getMyInvestProjects()
+      this.getMyShares()
     },
 
     methods: {
@@ -64,13 +64,13 @@
       },
 
       detailProyek(id) {
-        this.$router.push('/dashboard/investor/investasiku/' + id);
+        this.$router.push('/dashboard/investor/sahamku/' + id);
       },
 
-      getMyInvestProjects() {
-        this.$axios.get('core/projects/my/').then(response => {
+      getMyShares() {
+        this.$axios.get('core/companies/my/').then(response => {
           console.log(response.data.results)
-          this.myInvestProjects = response.data.results
+          this.myShares = response.data.results
 
         })
       }
