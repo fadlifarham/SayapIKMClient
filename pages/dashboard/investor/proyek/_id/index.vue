@@ -87,6 +87,9 @@
         </v-flex>
       </v-layout>
     </v-container>
+
+    
+
   </div>
 </template>
 
@@ -166,14 +169,9 @@
       },
     },
 
-    watch: [''],
-
     methods: {
-      listProyek() {
-        let id = 1;
-        
-        
-      },
+
+      
 
       getDataProyek() {
         let id = this.$route.params.id;
@@ -189,10 +187,6 @@
 
           this.dataInformasi[0].value = response.data.funded
           this.dataInformasi[1].value = response.data.target
-
-          // console.log(this.dataInformasi);
-
-          console.log(this.echart)
         });
       }
     },

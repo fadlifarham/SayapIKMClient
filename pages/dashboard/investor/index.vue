@@ -9,7 +9,8 @@
       <v-layout row wrap>
         <v-flex lg4 sm12 v-for="item in this.newProyeks" :key="item.id">
           <v-card>
-            <v-card-media :src="item.image" height="250"></v-card-media>
+            <v-card-media v-if="item.image != NULL" :src="item.image" height="250"></v-card-media>
+            <v-card-media v-else height="250"></v-card-media>
             <v-card-text>
               <h3 class="headline">{{ item.name }}</h3>
             </v-card-text>
@@ -34,7 +35,34 @@
       <v-layout row wrap>
         <v-flex lg4 sm12 v-for="item in this.hotProyeks" :key="item.id">
           <v-card>
-            <v-card-media :src="item.image" height="250"></v-card-media>
+            <v-card-media v-if="item.image != NULL" :src="item.image" height="250"></v-card-media>
+            <v-card-media v-else height="250"></v-card-media>            
+            <v-card-text>
+              <h3 class="headline">{{ item.name }}</h3>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-text>
+              <div>
+                {{ subString(item.description) }}
+              </div>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-btn flat small @click="listProyek(item.id)">Info Lebih Lanjut</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </v-layout>
+
+      <br>
+      <v-flex sm12>
+        <h2>Saham</h2>
+      </v-flex>
+      <v-layout row wrap>
+        <v-flex lg4 sm12 v-for="item in this.hotProyeks" :key="item.id">
+          <v-card>
+            <v-card-media v-if="item.image != NULL" :src="item.image" height="250"></v-card-media>
+            <v-card-media v-else height="250"></v-card-media>            
             <v-card-text>
               <h3 class="headline">{{ item.name }}</h3>
             </v-card-text>

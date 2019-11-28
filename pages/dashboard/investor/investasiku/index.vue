@@ -7,21 +7,23 @@
       </v-flex>
 
       <v-layout row wrap>
-        <v-flex lg4 sm12 v-for="item in this.hotProyeks" :key="item.id">
+        <v-flex lg4 sm12 v-for="item in this.myInvestProjects" :key="item.id">
           <v-card>
-            <v-card-media :src="require('@/static/bg/8.jpg')" height="250"></v-card-media>
+            <v-card-media v-if="item.image != NULL" :src="item.image" height="250"></v-card-media>
+            <v-card-media v-else height="250"></v-card-media>
             <v-card-text>
-              <h3 class="headline">Nama Perusahaan</h3>
+              <h3 class="headline">{{ item.name }}</h3>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-text>
               <div>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                <!-- {{ subString(item.description) }} -->
+                {{ item.description }}
               </div>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
-              <v-btn flat small @click="listProyek">Info Lebih Lanjut</v-btn>
+              <v-btn flat small @click="detailProyek(item.id)">Info Lebih Lanjut</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -38,22 +40,39 @@
     data: () => ({
       color: Material,
       selectedTab: 'tab-1',
-      hotProyeks: [
+      myInvestProjects: [
         '',
         '',
         ''
       ],
-      newProyeks: [
-        '',
-        '',
-        ''
-      ]
     }),
 
+    mounted() {
+      this.getMyInvestProjects()
+    },
+
     methods: {
-      listProyek() {
-        let id = 1;
-        this.$router.push(  id + '');
+
+      subString(dataString) {
+        if (dataString.length <= 200) {
+          return dataString;  
+        } else {
+          var data = dataString.substr(1, 200);
+          data = data + " ...";
+          return data;
+        }
+      },
+
+      detailProyek(id) {
+        this.$router.push('/dashboard/investor/investasiku/' + id);
+      },
+
+      getMyInvestProjects() {
+        this.$axios.get('core/projects/my/').then(response => {
+          console.log(response.data.results)
+          this.myInvestProjects = response.data.results
+          
+        })
       }
     },
 

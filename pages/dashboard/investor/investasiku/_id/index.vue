@@ -4,12 +4,12 @@
 
       <v-layout row wrap>
         <v-flex sm12>
-          <h2>PT. Kenapa Kamu Baca Saya</h2>
+          <h2>{{ project_name }}</h2>
         </v-flex>
         <v-flex sm12>
           <v-card>
             <v-card-text>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+              {{ project_description }}
             </v-card-text>
           </v-card>
         </v-flex>
@@ -20,15 +20,11 @@
                 <tbody>
                 <tr>
                   <td>Nama Owner</td>
-                  <td>Fatkul Nur Koirudin</td>
+                  <td>{{ owner_name }}</td>
                 </tr>
                 <tr>
                   <td>Address</td>
-                  <td>JL Bukit Barisan No. 2520111, Surabaya</td>
-                </tr>
-                <tr>
-                  <td>Jumlah Saham</td>
-                  <td>250 Lembar (dimiliki) / 25000 Lembar (total)</td>
+                  <td>{{ address }}</td>
                 </tr>
                 <tr>
                   <td colspan="2">
@@ -48,14 +44,15 @@
       </v-flex>
 
       <v-layout row wrap>
-        <v-flex lg12 sm12 v-for="item in reports">
+        <v-flex lg12 sm12 v-for="item in reports" :key="item.id">
           <v-layout row>
             <v-flex lg10 sm12>
               <v-card>
                 <v-card-media class="hidden-md-and-up">
                   <br>
                   <div align="center">
-                    <img src="https://source.unsplash.com/250x250">
+                    <img v-if="item.documentation != NULL" :src="item.documentation" :height="250">
+                    <img v-else :height="250">
                   </div>
                 </v-card-media>
                 <v-card-text>
@@ -64,23 +61,23 @@
                     <tr>
                       <td colspan="4">
                         <p>
-                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                          {{ item.description }}
                         </p>
                       </td>
                     </tr>
                     <tr>
                       <td>Revenue</td>
-                      <td>Rp 91283</td>
+                      <td>Rp {{ item.revenue }}</td>
                       <td>Profit</td>
-                      <td>Rp 39823</td>
+                      <td>Rp {{ item.profit }}</td>
                     <tr>
                       <td>Hutang</td>
-                      <td>Rp 673832</td>
+                      <td>Rp {{ item.loan }}</td>
                       <td colspan="2"></td>
                     </tr>
                     <tr>
                       <td colspan="4">
-                        <v-btn color="primary" block>Download Laporan</v-btn>
+                        <v-btn color="primary" :to="item.file" target="_blank" block>Download Laporan</v-btn>
                       </td>
                     </tr>
                     </tbody>
@@ -120,7 +117,20 @@
         '',
         ''
       ],
+
+      project_name: "",
+      project_description: "",
+      owner_name: "",
+      address: "",
+
+
     }),
+
+    mounted() {
+      this.getProjectInfo()
+      this.getReports()
+    },
+
     computed: {
       computeCardLayout () {
         return (this.mini) ? 'row' : 'column';
@@ -136,6 +146,24 @@
       listProyek() {
         let id = 1;
         this.$router.push('investasiku/' + id + '');
+      },
+
+      getProjectInfo() {
+        this.$axios.get('core/projects/' + this.$route.params.id + '/?expand=company.owners').then(response => {
+          this.project_name = response.data.name
+          this.project_description = response.data.description
+          this.owner_name = response.data.company.owners[0].firstName + " " + response.data.company.owners[0].lastName
+          this.address = response.data.company.address
+        })
+      },
+
+      getReports() {
+        let id = this.$route.params.id
+        console.log(id)
+        this.$axios.get('core/reports/?project=' + id).then(response => {
+          console.log(response.data.results)
+          this.reports = response.data.results
+        })
       }
     },
 

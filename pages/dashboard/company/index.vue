@@ -5,7 +5,8 @@
       <v-layout row wrap>
         <v-flex lg4 sm12 v-for="item in this.companies" :key="item">
           <v-card>
-            <v-card-media :src="item.image" height="250"></v-card-media>
+            <v-card-media v-if="item.image != NULL" :src="item.image" height="250"></v-card-media>
+            <v-card-media v-else  height="250"></v-card-media>
             <v-card-text>
               <h3 class="headline">{{ item.name }}</h3>
             </v-card-text>
@@ -64,13 +65,13 @@
             ></v-text-field>
 
             <v-text-field
-              v-model="image"
+              @change="imageHandler"
               label="Logo"
               type="file"
             ></v-text-field>
 
             <v-text-field
-            v-model="prospectus"
+              @change="propectusHandler"
               label="Prospektus"
               type="file"
             ></v-text-field>
@@ -124,7 +125,7 @@
       },
 
       listProyek(id) {
-        this.$router.push('company/' + id + '/proyek');
+        this.$router.push('/dashboard/company/' + id + '/proyek');
       },
 
       getCompany() {
@@ -142,21 +143,38 @@
       },
       
       addCompany() {
-        this.$axios.post('core/companies', {
-          name: this.name,
-          description: this.description,
-          address: this.address,
-          image: this.image,
-          prospectus: this.prospectus,
-          nShares: this.nShares
+        let formData = new FormData()
+        formData.append('name', this.name)
+        formData.append('description', this.description)
+        formData.append('address', this.address)
+        formData.append('image', this.image)
+        formData.append('prospectus', this.prospectus)
+        formData.append('nShares', this.nShares)
+
+        this.$axios.post('core/companies/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         }).then(response => {
-          console.log(response)
+          if (response.status == 201) {
+            this.$router.go()
+          }
         })
+
+
       },
 
       showPopupAddCompany() {
-        this.$modal.show('add-company');
-      }
+        this.$modal.show('add-company')
+      },
+
+      imageHandler(e) {
+        this.image = this.$refs.file.files[0]
+      },
+
+      propectusHandler(e) {
+        this.prospectus = this.$refs.file.file[0]
+      },
       
     }
 

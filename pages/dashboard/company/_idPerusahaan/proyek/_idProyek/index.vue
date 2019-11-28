@@ -65,7 +65,8 @@
                 <v-card-media class="hidden-md-and-up">
                   <br>
                   <div align="center">
-                    <img src="https://source.unsplash.com/250x250">
+                    <img v-if="item.file != NULL" :src="item.file">
+                    <img v-else >
                   </div>
                 </v-card-media>
                 <v-card-text>
@@ -74,18 +75,18 @@
                     <tr>
                       <td colspan="4">
                         <p>
-                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                          {{ item.description }}
                         </p>
                       </td>
                     </tr>
                     <tr>
                       <td>Revenue</td>
-                      <td>Rp 91283</td>
+                      <td>Rp {{ item.revenue }}</td>
                       <td>Profit</td>
-                      <td>Rp 39823</td>
+                      <td>Rp {{ item.profit }}</td>
                     <tr>
                       <td>Hutang</td>
-                      <td>Rp 673832</td>
+                      <td>Rp {{ item.loan }}</td>
                       <td colspan="2"></td>
                     </tr>
                     <tr>
@@ -99,7 +100,8 @@
               </v-card>
             </v-flex>
             <v-flex lg-2 class="hidden-sm-and-down">
-              <img src="https://source.unsplash.com/250x250">
+              <img v-if="item.file != NULL" :src="item.file">
+              <img v-else >
             </v-flex>
           </v-layout>
         </v-flex>
@@ -128,43 +130,53 @@
             <v-form>
               <div class="d-flex my-2">
                 <v-flex lg12 sm12>
-                  <v-text-field textarea label="Description">
+                  <v-text-field v-model="description"  textarea label="Description">
                   </v-text-field>
                 </v-flex>
               </div>
               
-              <v-text-field
+              <label for="">File</label>
+              <input
+                @change="fileHandler"
+                ref="file"
                 label="File"
                 type="file"
-              ></v-text-field>
+              />
 
               <v-text-field
+                v-model="revenue"
                 label="Revenue"
                 type="text"
               ></v-text-field>
 
               <v-text-field
+                v-model="profit"
                 label="Profit"
                 type="text"
               ></v-text-field>
 
               <v-text-field
+                v-model="cost"
                 label="Cost"
                 type="text"
               ></v-text-field>
 
               <v-text-field
-                label="Load"
+                v-model="loan"
+                label="Loan"
                 type="text"
               ></v-text-field>
 
-              <v-text-field
+              <label for="">Gambar Dokumentasi</label>
+              <input
+                @change="fileHandler"
+                ref="file"
                 label="Gambar Dokumentasi"
                 type="file"
-              ></v-text-field>
+              />
 
               <div class="form-btn" >
-                <v-btn color="primary" class="btn-margin-bottom" block>Submit</v-btn>
+                <v-btn color="primary" class="btn-margin-bottom" @click="createReport" block>Submit</v-btn>
                 <v-btn color="error" block>Clear</v-btn>
               </div>
             </v-form>
@@ -233,7 +245,14 @@
       project_description: "",
       company_address: "",
 
-
+      description: "",
+      file: "",
+      revenue: "",
+      profit: "",
+      cost: "",
+      loan: "",
+      documentation: "",
+      project: "",
     }),
 
     mounted() {
@@ -269,7 +288,39 @@
       getProjectReports() {
         let id = this.$route.params.idProyek
         this.$axios.get('core/reports/?project=' + id).then(response => {
-          console.log(response.data)
+          console.log(response.data.results)
+          this.reports = response.data.results
+        })
+      },
+
+      fileHandler() {
+        console.log(this.$refs.file)
+        this.file = this.$refs.file.files[0]
+      },
+
+      documentationHandler() {
+        this.documentation = this.$refs.file.files[0]
+      },
+
+      createReport() {
+        let formData = new FormData()
+        formData.append('description', this.description)
+        formData.append('file', this.file)
+        formData.append('revenue', this.revenue)
+        formData.append('profit', this.profit)
+        formData.append('cost', this.cost)
+        formData.append('loan', this.loan)
+        formData.append('documentation', this.documentation)
+        formData.append('project', this.$route.params.idProyek)
+
+        this.$axios.post('core/reports/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(response => {
+          if (response.status == 201) {
+            this.$router.go()
+          }
         })
       }
     },

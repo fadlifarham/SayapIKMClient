@@ -5,9 +5,10 @@
 
       <v-layout row wrap>
 
-        <v-flex lg4 sm12 v-for="item in this.projects" :key="item">
+        <v-flex lg4 sm12 v-for="item in this.projects" :key="item.id">
           <v-card>
-            <v-card-media :src="item.image" height="250"></v-card-media>
+            <v-card-media v-if="item.image != NULL" :src="item.image" height="250"></v-card-media>
+            <v-card-media v-else  height="250"></v-card-media>
             <v-card-text>
               <h3 class="headline">{{ item.name }}</h3>
             </v-card-text>
@@ -48,6 +49,7 @@
           <v-form>
             <div class="d-flex my-2">
               <v-text-field
+                v-model="name"
                 label="Nama Proyek"
                 v-validate="'required'"
                 :error-messages="errors.collect('nama_proyek')"
@@ -56,26 +58,29 @@
             </div>
 
             <v-flex lg12 sm12>
-              <v-text-field textarea label="Description">
+              <v-text-field v-model="description" textarea label="Description">
               </v-text-field>
             </v-flex>
 
             <v-text-field
+              @change="prospectusHandler"
               label="Prospektus"
               type="file"
             ></v-text-field>
 
             <v-text-field
+              v-model="target"
               label="Target"
             ></v-text-field>
 
             <v-text-field
+              @change="imageHandler"
               label="Gambar"
               type="file"
             ></v-text-field>
 
             <div class="form-btn" >
-              <v-btn color="primary" class="btn-margin-bottom" block>Submit</v-btn>
+              <v-btn color="primary" class="btn-margin-bottom" @click="createProject" block>Submit</v-btn>
               <v-btn color="error" block>Clear</v-btn>
             </div>
           </v-form>
@@ -93,7 +98,14 @@
     data: () => ({
       color: Material,
       selectedTab: 'tab-1',
-      projects: []
+      projects: [],
+
+      name: "",
+      description: "",
+      prospectus: "",
+      target: "",
+      image: "",
+      company: ""
     }),
 
     mounted() {
@@ -122,7 +134,37 @@
 
       showPopupAddProject() {
         this.$modal.show('add-project');
+      },
+
+      prospectusHandler() {
+        this.prospectus = this.$refs.file.files[0]
+      },
+
+      imageHandler() {
+        this.image = this.$refs.file.files[0]
+      },
+
+      createProject() {
+        let formData = new FormData()
+        formData.append('name', this.name)
+        formData.append('description', this.description)
+        formData.append('prospectus', this.prospectus)
+        formData.append('target', this.target)
+        formData.append('image', this.image)
+        formData.append('company', this.$route.params.idPerusahaan)
+
+        this.$axios.post('core/projects/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(response => {
+          if (response.status == 201) {
+            this.$router.go()
+          }
+        })
       }
+
+
     },
 
   }
