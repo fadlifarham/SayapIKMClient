@@ -224,11 +224,11 @@
       selectedTab: 'tab-1',
       dataInformasi: [
         {
-          value: 335232,
+          value: 0,
           name: 'Dana Terkumpul'
         },
         {
-          value: 310000,
+          value: 700000000,
           name: 'Dana Dibutuhkan'
         }
       ],

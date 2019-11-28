@@ -64,17 +64,23 @@
               label="Alamat"
             ></v-text-field>
 
-            <v-text-field
+            <label for="">Logo</label>
+            <input
               @change="imageHandler"
+              ref="file"
               label="Logo"
               type="file"
-            ></v-text-field>
+            />
+            
+            <br>
 
-            <v-text-field
+            <label for="">Prospektus</label>
+            <input
               @change="propectusHandler"
+              ref="file"
               label="Prospektus"
               type="file"
-            ></v-text-field>
+            />
 
             <v-text-field
               v-model="nShares"
@@ -119,6 +125,10 @@
 
     methods: {
       subString(dataString) {
+        if (dataString == undefined) {
+          return
+        }
+
         var data = dataString.substr(1, 200);
         data = data + " ...";
         return data;
@@ -170,10 +180,11 @@
 
       imageHandler(e) {
         this.image = this.$refs.file.files[0]
+        console.log(this.image)
       },
 
       propectusHandler(e) {
-        this.prospectus = this.$refs.file.file[0]
+        this.prospectus = this.$refs.file.files[0]
       },
       
     }

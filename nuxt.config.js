@@ -58,7 +58,7 @@ module.exports = {
 
   // BaseURL
   axios: {
-    baseURL: "http://192.168.100.72:8000/api/",
+    baseURL: "https://sayap-ikm.hackathon.reyvel.id/api/",
     credentials: false
   },
 
