@@ -42,7 +42,7 @@
                     <v-btn color="primary" block>Download Prospektus</v-btn>
                   </td>
                   <td>
-                    <v-btn color="success" block>Investasi</v-btn>
+                    <v-btn color="success" @click="showPopupInvestment" block>Investasi</v-btn>
                   </td>
                 </tr>
                 </tbody>
@@ -52,6 +52,14 @@
         </v-flex>
       </v-layout>
       <v-layout row wrap>
+        <v-flex lg12 sm12>
+          <v-card>
+            <v-card-text>
+              <strong>Deskripsi Proyek</strong> <br>
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+            </v-card-text>
+          </v-card>
+        </v-flex>
         <v-flex lg12 sm12>
           <v-widget title="Informasi Investasi">
             <div slot="widget-content">
@@ -85,11 +93,34 @@
             </v-card-text>
           </v-card>
         </v-flex>
+
+        <modal name="investment">
+          <v-card>
+            <v-card-text>
+              <v-flex sm-12>
+                <div align="center">
+                  <h3 class="title">INVESTASI</h3>
+                </div>
+              </v-flex>
+              <v-form>
+                <div class="d-flex my-2">
+                  <v-text-field
+                    label="Jumlah Investasi"
+                    v-validate="'required'"
+                    :error-messages="errors.collect('jumlah')"
+                    required
+                  ></v-text-field>
+                </div>
+                <div class="form-btn" >
+                  <v-btn color="primary" class="btn-margin-bottom" block>Submit</v-btn>
+                  <v-btn color="error" block>Clear</v-btn>
+                </div>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </modal>
       </v-layout>
     </v-container>
-
-    
-
   </div>
 </template>
 
@@ -171,11 +202,11 @@
 
     methods: {
 
-      
+
 
       getDataProyek() {
         let id = this.$route.params.id;
-        
+
         this.$axios.get('core/projects/' + id + '/?expand=company.owners').then(response => {
           console.log(response.data)
           this.owner_name = response.data.company.owners[0].firstName + " " + response.data.company.owners[0].lastName
@@ -188,6 +219,10 @@
           this.dataInformasi[0].value = response.data.funded
           this.dataInformasi[1].value = response.data.target
         });
+      },
+      showPopupInvestment() {
+        this.$modal.show('investment');
+
       }
     },
 
