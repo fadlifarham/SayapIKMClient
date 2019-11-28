@@ -13,16 +13,16 @@ const Menu = [
         href: '/dashboard/company',
         items: [
           {
-            name: 'idPerusahaan', 
+            name: 'id', 
             title: 'ID Perusahaan',
-            href: '/dashboard/company/:id',
-            items: [
-              {
-                name: 'proyek', 
-                title: 'Proyek', 
-                href: '/dashboard/company/:id/proyek'
-              }
-            ]
+            href: '/dashboard/company/:id/proyek',
+            // items: [
+            //   {
+            //     name: 'proyek', 
+            //     title: 'Proyek', 
+            //     href: '/dashboard/company/(.*)/proyek'
+            //   }
+            // ]
           }
         ]
       },

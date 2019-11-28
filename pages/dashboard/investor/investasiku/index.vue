@@ -17,7 +17,7 @@
             <v-card-text>
               <div>
                 <!-- {{ subString(item.description) }} -->
-                {{ item.description.substr(1, 200) }}
+                {{ subString(item.description) }}
               </div>
             </v-card-text>
             <v-divider></v-divider>
@@ -48,8 +48,8 @@ export default {
 
   methods: {
     subString(dataString) {
-      if (dataString.length <= 200) {
-        return dataString;
+      if (dataString == undefined) {
+        return
       } else {
         var data = dataString.substr(1, 200);
         data = data + " ...";

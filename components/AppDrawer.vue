@@ -9,7 +9,7 @@
     width="260"
   >
     <v-toolbar color="primary darken-1" dark>
-      <img src="../static/m.png" height="36" alt="Vue Material Admin Template">
+      <img src="@/static/sayapikm.png" height="36" alt="Vue Material Admin Template">
       <v-toolbar-title class="ml-0 pl-3">
         <span class="hidden-sm-and-down">Sayap IKM</span>
       </v-toolbar-title>
@@ -17,8 +17,8 @@
     <vue-perfect-scrollbar class="drawer-menu--scroll" :settings="scrollSettings">
       <v-list dense expand>
         <template>
-          <v-subheader class="theme--light">Perusahaan</v-subheader>
-          <v-list>
+          <v-subheader v-if="this.$auth.user.role == 'OW'" class="theme--light">Perusahaan</v-subheader>
+          <v-list v-if="this.$auth.user.role == 'OW'">
             <v-list-tile href="/dashboard/company">
               <v-list-tile-avatar>
                 <v-icon>dashboard</v-icon>
@@ -29,8 +29,8 @@
             </v-list-tile>
           </v-list>
 
-          <v-subheader class="theme--light">Investor</v-subheader>
-          <v-list>
+          <v-subheader v-if="this.$auth.user.role == 'IV'" class="theme--light">Investor</v-subheader>
+          <v-list v-if="this.$auth.user.role == 'IV'">
             <v-list-tile href="/dashboard/investor">
               <v-list-tile-avatar>
                 <v-icon>dashboard</v-icon>
@@ -145,6 +145,11 @@
         default: true
       },
     },
+
+    // mounted() {
+    //   console.log(this.$auth.user.role)
+    // },
+
     data: () => ({
       mini: false,
       menus: menu,

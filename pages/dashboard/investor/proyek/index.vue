@@ -3,40 +3,14 @@
     <v-container grid-list-xl fluid>
 
       <v-flex sm12>
-        <h2>New Proyek</h2>
+        <h2>Semua Proyek</h2>
       </v-flex>
 
       <v-layout row wrap>
-        <v-flex lg4 sm12 v-for="item in this.newProyeks" :key="item.id">
+        <v-flex lg4 sm12 v-for="item in this.projects" :key="item.id">
           <v-card>
             <v-card-media v-if="item.image != NULL" :src="item.image" height="250"></v-card-media>
             <v-card-media v-else height="250"></v-card-media>
-            <v-card-text>
-              <h3 class="headline">{{ item.name }}</h3>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-text>
-              <div>
-                {{ subString(item.description) }}
-              </div>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-btn flat small @click="listProyek(item.id)">Info Lebih Lanjut</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-flex>
-      </v-layout>
-
-      <br>
-      <v-flex sm12>
-        <h2>Hot Proyek</h2>
-      </v-flex>
-      <v-layout row wrap>
-        <v-flex lg4 sm12 v-for="item in this.hotProyeks" :key="item.id">
-          <v-card>
-            <v-card-media v-if="item.image != NULL" :src="item.image" height="250"></v-card-media>
-            <v-card-media v-else height="250"></v-card-media>            
             <v-card-text>
               <h3 class="headline">{{ item.name }}</h3>
             </v-card-text>
@@ -66,13 +40,11 @@
     data: () => ({
       color: Material,
       selectedTab: 'tab-1',
-      hotProyeks: [],
-      newProyeks: []
+      projects: []
     }),
 
     mounted() {
-      this.getHotProyeks()
-      this.getNewProyeks()
+      this.getAllProjects()
     },
 
     methods: {
@@ -91,16 +63,10 @@
         this.$router.push('investor/proyek/' + id);
       },
 
-      getHotProyeks() {
-        this.$axios.get('/core/projects/?ordering=-n_invests').then(response => {
-          this.hotProyeks = response.data.results
-        });
-      },
-
-      getNewProyeks() {
-        this.$axios.get('/core/projects/?ordering=-created_at').then(response => {
-          this.newProyeks = response.data.results
-        });
+      getAllProjects() {
+          this.$axios.get('core/projects/').then(response => {
+              console.log(response.data)
+          })
       }
     },
 
