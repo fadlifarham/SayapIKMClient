@@ -2,14 +2,14 @@
   <div id="pageDashboard">
     <v-container grid-list-xl fluid>
 
-      <v-layout row wrap>
+      <v-layout row wrap v-if="reports">
         <v-flex sm12>
-          <h2>{{ project_name }}</h2>
+          <h2>{{ reports.name }}</h2>
         </v-flex>
         <v-flex sm12>
           <v-card>
             <v-card-text>
-              {{ project_description }}
+              {{ reports.description }}
             </v-card-text>
           </v-card>
         </v-flex>
@@ -20,11 +20,11 @@
                 <tbody>
                 <tr>
                   <td>Nama Owner</td>
-                  <td>{{ owner_name }}</td>
+                  <td>{{ reports.owners[0].firstName }} {{ reports.owners[0].lastName }}</td>
                 </tr>
                 <tr>
                   <td>Address</td>
-                  <td>{{ address }}</td>
+                  <td>{{ reports.address }}</td>
                 </tr>
                 <tr>
                   <td colspan="2">
@@ -37,7 +37,7 @@
           </v-card>
         </v-flex>
       </v-layout>
-      
+
     </v-container>
   </div>
 </template>
@@ -59,22 +59,16 @@
     data: () => ({
       color: Material,
       selectedTab: 'tab-1',
-      reports: [
-        '',
-        '',
-        ''
-      ],
+      reports: '',
 
       project_name: "",
       project_description: "",
       owner_name: "",
-      address: "",
-
-
+      address: ""
     }),
 
     mounted() {
-      this.getProjectInfo()
+      // this.getProjectInfo()
       this.getReports()
     },
 
@@ -95,21 +89,21 @@
         this.$router.push('investasiku/' + id + '');
       },
 
-      getProjectInfo() {
-        this.$axios.get('core/projects/' + this.$route.params.id + '/?expand=company.owners').then(response => {
-          this.project_name = response.data.name
-          this.project_description = response.data.description
-          this.owner_name = response.data.company.owners[0].firstName + " " + response.data.company.owners[0].lastName
-          this.address = response.data.company.address
-        })
-      },
+      // getProjectInfo() {
+      //   this.$axios.get('core/projects/' + this.$route.params.id + '/?expand=company.owners').then(response => {
+      //     this.project_name = response.data.name
+      //     this.project_description = response.data.description
+      //     this.owner_name = response.data.company.owners[0].firstName + " " + response.data.company.owners[0].lastName
+      //     this.address = response.data.company.address
+      //   })
+      // },
 
       getReports() {
         let id = this.$route.params.id
         console.log(id)
-        this.$axios.get('core/reports/?project=' + id).then(response => {
-          console.log(response.data.results)
-          this.reports = response.data.results
+        this.$axios.get('core/companies/' + id + '/?expand=owners').then(response => {
+          console.log(response.data)
+          this.reports = response.data
         })
       }
     },
